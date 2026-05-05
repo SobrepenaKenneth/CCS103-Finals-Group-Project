@@ -23,6 +23,9 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 
 public class UI {
@@ -43,7 +46,7 @@ public class UI {
 	private DefaultTableModel savedTables[] = new DefaultTableModel[30];
 	
 	private int usedTableSlots = 0;
-	private String savedCustomerDetails[][] = new String[30][3];
+	private String savedCustomerDetails[][] = new String[30][4];
 	private JCheckBox serviceBoxes[] = new JCheckBox[10];
 	private double servicePrices[] = { // Prices are ordered from index 0-9 matching the order of the Chechboxes;
 									1000,
@@ -57,7 +60,7 @@ public class UI {
 									9000,
 									10000
 	};
-	private int usedInputSlots = 0;
+	private int selectedServices = 0;
 	
 	private JTable tableInput;
 	private JList<String> listDisplayTables;
@@ -67,7 +70,8 @@ public class UI {
 	private JTextField textSavedName;
 	private JTextField textSavedContact;
 	private JTextField textSavedAge;
-	
+	private JLabel lblTotalValue;
+	private JLabel lblSavedTotalVal;
 	/**
 	 * Launch the application.
 	 */
@@ -96,12 +100,12 @@ public class UI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 690, 460);
+		frame.setBounds(100, 100, 690, 490);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		cardPanel = new JPanel();
-		cardPanel.setBounds(10, 11, 654, 399);
+		cardPanel.setBounds(10, 41, 654, 399);
 		frame.getContentPane().add(cardPanel);
 		cardPanel.setLayout(cardlay);						
 		
@@ -137,7 +141,7 @@ public class UI {
 		panelNewData.add(textContact);
 		
 		JScrollPane scrollInput = new JScrollPane();
-		scrollInput.setBounds(269, 11, 375, 325);
+		scrollInput.setBounds(269, 11, 375, 300);
 		panelNewData.add(scrollInput);
 		
 		tableInput = new JTable(dataInputModel) {
@@ -184,78 +188,70 @@ public class UI {
 		JLabel lblPrice3 = new JLabel("₱3000");
 		lblPrice3.setBounds(220, 166, 80, 14);
 		panelNewData.add(lblPrice3);
-
-		JSeparator separatorAddService = new JSeparator();
-		separatorAddService.setBounds(124, 199, 135, 2);
-		panelNewData.add(separatorAddService);
-		
-		JLabel lblAdditionalServices = new JLabel("Additional Services");
-		lblAdditionalServices.setBounds(10, 192, 115, 14);
-		panelNewData.add(lblAdditionalServices);
 		
 		JCheckBox chckbxOption4 = new JCheckBox("Tooth Extraction");
 		serviceBoxes[3] = chckbxOption4;
-		chckbxOption4.setBounds(5, 208, 205, 23);
+		chckbxOption4.setBounds(5, 188, 205, 23);
 		panelNewData.add(chckbxOption4);
 
 		JLabel lblPrice4 = new JLabel("₱4000");
-		lblPrice4.setBounds(220, 212, 80, 14);
+		lblPrice4.setBounds(220, 192, 80, 14);
 		panelNewData.add(lblPrice4);
 
 		JCheckBox chckbxOption5 = new JCheckBox("Root Canal Treatment");
 		serviceBoxes[4] = chckbxOption5;
-		chckbxOption5.setBounds(5, 234, 205, 23);
+		chckbxOption5.setBounds(5, 214, 205, 23);
 		panelNewData.add(chckbxOption5);
 
 		JLabel lblPrice5 = new JLabel("₱5000");
-		lblPrice5.setBounds(220, 238, 80, 14);
+		lblPrice5.setBounds(220, 218, 80, 14);
 		panelNewData.add(lblPrice5);
 
 		JCheckBox chckbxOption6 = new JCheckBox("Bridges, Dentures & Tooth Replacement");
 		chckbxOption6.setFont(new Font("Tahoma", Font.BOLD, 9));
 		serviceBoxes[5] = chckbxOption6;
-		chckbxOption6.setBounds(5, 260, 205, 23);
+		chckbxOption6.setBounds(5, 240, 205, 23);
 		panelNewData.add(chckbxOption6);
 
 		JLabel lblPrice6 = new JLabel("₱6000");
-		lblPrice6.setBounds(220, 264, 80, 14);
+		lblPrice6.setBounds(220, 244, 80, 14);
 		panelNewData.add(lblPrice6);
 		
 		JCheckBox chckbxOption7 = new JCheckBox("Dental Crowns");
 		serviceBoxes[6] = chckbxOption7;
-		chckbxOption7.setBounds(5, 286, 199, 23);
+		chckbxOption7.setBounds(5, 266, 199, 23);
 		panelNewData.add(chckbxOption7);
 
 		JLabel lblPrice7 = new JLabel("₱7000");
-		lblPrice7.setBounds(220, 290, 80, 14);
+		lblPrice7.setBounds(220, 270, 80, 14);
 		panelNewData.add(lblPrice7);
 		
 		JCheckBox chckbxOption8 = new JCheckBox("Orthodontics (Braces / Aligners)");
 		chckbxOption8.setFont(new Font("Tahoma", Font.BOLD, 10));
 		serviceBoxes[7] = chckbxOption8;
-		chckbxOption8.setBounds(5, 312, 205, 23);
+		chckbxOption8.setBounds(5, 292, 205, 23);
 		panelNewData.add(chckbxOption8);
 
 		JLabel lblPrice8 = new JLabel("₱8000");
-		lblPrice8.setBounds(220, 316, 80, 14);
+		lblPrice8.setBounds(220, 296, 46, 14);
 		panelNewData.add(lblPrice8);
 		
 		JCheckBox chckbxOption9 = new JCheckBox("Teeth Whitening");
 		serviceBoxes[8] = chckbxOption9;
-		chckbxOption9.setBounds(5, 338, 199, 23);
+		chckbxOption9.setBounds(5, 318, 199, 23);
 		panelNewData.add(chckbxOption9);
 
 		JLabel lblPrice9 = new JLabel("₱9000");
-		lblPrice9.setBounds(220, 342, 80, 14);
+		lblPrice9.setBounds(220, 322, 46, 14);
 		panelNewData.add(lblPrice9);
 
 		JCheckBox chckbxOption10 = new JCheckBox("Gum Treatment");
 		serviceBoxes[9] = chckbxOption10;
-		chckbxOption10.setBounds(5, 364, 205, 23);
+		chckbxOption10.setBounds(5, 344, 205, 23);
 		panelNewData.add(chckbxOption10);
 
 		JLabel lblPrice10 = new JLabel("₱10000");
-		lblPrice10.setBounds(220, 368, 80, 14);
+		lblPrice10.setBounds(220, 348, 46, 14);
 		panelNewData.add(lblPrice10);
 		
 		JButton btnCalculateBill = new JButton("Calculate Bill");
@@ -271,7 +267,7 @@ public class UI {
 		panelSavedData.setLayout(null);
 		
 		JScrollPane scrollTable = new JScrollPane();
-		scrollTable.setBounds(271, 68, 373, 320);
+		scrollTable.setBounds(271, 68, 373, 286);
 		panelSavedData.add(scrollTable);
 		
 		tableDisplay = new JTable() {
@@ -333,14 +329,13 @@ public class UI {
 
 		dataInputModel.setColumnIdentifiers(new String[] {"Service", "Price"} );
 		
-		for(JCheckBox cb : serviceBoxes) {
-			cb.addItemListener(service);
-		}
+		JLabel lblSavedTotal = new JLabel("Total:");
+		lblSavedTotal.setBounds(281, 365, 46, 14);
+		panelSavedData.add(lblSavedTotal);
 		
-		for(int tm = 0; tm < savedTables.length; tm++) {
-			savedTables[tm] = new DefaultTableModel(0, 2);
-			savedTables[tm].setColumnIdentifiers(new String[] {"Service", "Price"} );
-		}
+		lblSavedTotalVal = new JLabel("0");
+		lblSavedTotalVal.setBounds(466, 365, 46, 14);
+		panelSavedData.add(lblSavedTotalVal);
 		
 		
 		cardPanel.add(panelSavedData, "1");
@@ -358,9 +353,28 @@ public class UI {
 		btnClear.setBounds(464, 364, 168, 23);
 		panelNewData.add(btnClear);
 		
+		JLabel lblTotal = new JLabel("Total:");
+		lblTotal.setBounds(279, 322, 46, 14);
+		panelNewData.add(lblTotal);
 		
+		lblTotalValue = new JLabel("0");
+		lblTotalValue.setBounds(464, 322, 46, 14);
+		panelNewData.add(lblTotalValue);
 		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setBounds(0, 0, 674, 22);
+		frame.getContentPane().add(menuBar);
 		
+		JMenu menuFILE = new JMenu("FILE");
+		menuBar.add(menuFILE);
+		
+		JMenuItem mItemNew = new JMenuItem("New Form");
+		menuFILE.add(mItemNew);
+		
+
+		for(JCheckBox cb : serviceBoxes) {
+			cb.addItemListener(service);
+		}
 	}
 	
 	void clearInput() {
@@ -368,7 +382,7 @@ public class UI {
 		textAge.setText("");
 		textContact.setText("");
 		deselectBoxes();
-		usedInputSlots = 0;
+		selectedServices = 0;
 	}
 	
 	void deselectBoxes() {
@@ -379,6 +393,8 @@ public class UI {
 		
 	}
 	
+	
+	
 	// View Data Action Events
 	
 	MouseAdapter selectView = new MouseAdapter() {
@@ -387,12 +403,13 @@ public class UI {
 		public void mouseClicked(MouseEvent e) {
 			
 			int target = listDisplayTables.getSelectedIndex();
+			if(target == -1) return;
 			tableDisplay.setModel(savedTables[target]);
 			System.out.print("list index: " + target);
 			textSavedName.setText(savedCustomerDetails[target][0]);
 			textSavedAge.setText(savedCustomerDetails[target][1]);
 			textSavedContact.setText(savedCustomerDetails[target][2]);
-			
+			lblSavedTotalVal.setText(savedCustomerDetails[target][3]);
 		}
 		
 	};
@@ -407,13 +424,14 @@ public class UI {
 			int state = e.getStateChange();
 			JCheckBox origin = (JCheckBox) e.getSource();
 			String name = origin.getText();
+			double totalBill = Double.parseDouble(lblTotalValue.getText());
 			int target = 0;
 			
 			
 			
 			if (state == ItemEvent.SELECTED) {
 				
-				for(int i = 0; i <= serviceBoxes.length ; i++) {
+				for(int i = 0; i <= serviceBoxes.length ; i++) { // Look through Checkbox array for the matching box;
 					
 					if(serviceBoxes[i] == origin) {
 						target = i;
@@ -423,13 +441,16 @@ public class UI {
 					
 				}
 				
-				String price = String.valueOf(servicePrices[target]);
+				String price = String.valueOf(servicePrices[target]); // Use the index to display the corect price
 				dataInputModel.addRow(new String[] {name, price});
-				usedInputSlots++;
+				
+				lblTotalValue.setText(String.valueOf(totalBill + servicePrices[target]));
+				
+				selectedServices++;
 			}
 			else {
 				
-				for(int i = 0; i <= usedInputSlots; i++) {
+				for(int i = 0; i <= selectedServices; i++) {
 					
 					String valueAt = dataInputModel.getValueAt(i, 0).toString();
 					if(valueAt == name) {
@@ -440,8 +461,13 @@ public class UI {
 					
 				}
 				
+				double price = Double.parseDouble(dataInputModel.getValueAt(target, 1).toString());
+				
 				dataInputModel.removeRow(target);
-				usedInputSlots--;
+				
+				lblTotalValue.setText(String.valueOf(totalBill - price));
+				
+				selectedServices--;
 				
 			}
 			
@@ -473,19 +499,18 @@ public class UI {
 		            return;
 		        }
 
-		        double totalBill = 0;
-		        for (int i = 0; i < dataInputModel.getRowCount(); i++) {
-		            double price = Double.parseDouble(dataInputModel.getValueAt(i, 1).toString());
-		            totalBill += price;
-		        }
+		        String totalBill = lblTotalValue.getText();
 
 		        JOptionPane.showMessageDialog(cardPanel, "Total Bill: ₱" + totalBill);
 
 		        savedCustomerDetails[usedTableSlots][0] = username;
 		        savedCustomerDetails[usedTableSlots][1] = age;
 		        savedCustomerDetails[usedTableSlots][2] = contactNo;
+		        savedCustomerDetails[usedTableSlots][3] = totalBill;
 		        savedTableDisplay.addElement(username);
 		        
+		        savedTables[usedTableSlots] = new DefaultTableModel(0, 2);
+		        savedTables[usedTableSlots].setColumnIdentifiers(new String[] {"Service", "Price"} );
 		        for(int row = 0; row < dataInputModel.getRowCount(); row++) {
 		            String service = dataInputModel.getValueAt(row, 0).toString();
 		            String price = dataInputModel.getValueAt(row, 1).toString();
@@ -502,5 +527,4 @@ public class UI {
 		        
 		    }
 		};
-		
 }
