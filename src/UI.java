@@ -5,7 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -20,12 +21,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.ListSelectionModel;
 
 
 public class UI {
@@ -38,7 +41,7 @@ public class UI {
 	JPanel panelNewData;
 	
 	private JTextField textUsername;
-	private JTextField textAge;
+	private JSpinner spinAge;
 	private JTextField textContact;
 	
 	private DefaultTableModel dataInputModel = new DefaultTableModel(0, 2);
@@ -128,16 +131,18 @@ public class UI {
 		lblAge.setBounds(10, 39, 46, 14);
 		panelNewData.add(lblAge);
 		
-		textAge = new JTextField();
-		textAge.setColumns(10);
-		textAge.setBounds(84, 36, 175, 20);
-		panelNewData.add(textAge);
+		spinAge = new JSpinner();
+		spinAge.addKeyListener(ignoreLetters);
+		spinAge.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+		spinAge.setBounds(84, 36, 175, 20);
+		panelNewData.add(spinAge);
 		
 		JLabel lblContact = new JLabel("Contact No.");
 		lblContact.setBounds(10, 64, 71, 14);
 		panelNewData.add(lblContact);
 		
 		textContact = new JTextField();
+		textContact.addKeyListener(ignoreLetters);
 		textContact.setColumns(10);
 		textContact.setBounds(84, 61, 175, 20);
 		panelNewData.add(textContact);
@@ -403,7 +408,7 @@ public class UI {
 	
 	void clearInput() {
 		textUsername.setText("");
-		textAge.setText("");
+		spinAge.setValue(0);
 		textContact.setText("");
 		deselectBoxes();
 		selectedServices = 0;
@@ -519,7 +524,7 @@ public class UI {
 		    public void actionPerformed(ActionEvent e) {
 		        
 		        String username = textUsername.getText();
-		        String age = textAge.getText();
+		        String age = String.valueOf(spinAge.getValue());
 		        String contactNo = textContact.getText();
 		            
 		        if(username.isEmpty() || age.isEmpty() || contactNo.isEmpty()) {
@@ -563,5 +568,12 @@ public class UI {
                 viewRecords();
 		        
 		    }
+		};
+		
+	KeyAdapter ignoreLetters = new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(!Character.isDigit(e.getKeyChar())) e.consume();
+			}
 		};
 }
