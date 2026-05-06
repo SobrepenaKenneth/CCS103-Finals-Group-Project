@@ -336,7 +336,7 @@ public class DentalClinicKen {
 
 		// Add JCheckboxes to Panel New Data
 		chckbxOption1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 18));
-		chckbxOption1.setBounds(0, 404, 285, 23);
+		chckbxOption1.setBounds(0, 404, 271, 23);
 		panelNewData.add(chckbxOption1);
 		serviceBoxes[0] = chckbxOption1;
 		
