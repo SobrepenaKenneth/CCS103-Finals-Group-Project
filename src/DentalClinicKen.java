@@ -28,6 +28,7 @@ import javax.swing.JMenuItem;
 import java.awt.Color;
 import javax.swing.border.LineBorder;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
 public class DentalClinicKen {
 
@@ -55,17 +56,8 @@ public class DentalClinicKen {
 	private JLabel lblUsername;
 	private JLabel lblAge;
 	private JLabel lblContact;
-	private JLabel lblDentalServices;
 	private JLabel lblPrice1;
-	private JLabel lblPrice2;
-	private JLabel lblPrice3;
-	private JLabel lblPrice4;
-	private JLabel lblPrice5;
 	private JLabel lblPrice6;
-	private JLabel lblPrice7;
-	private JLabel lblPrice8;
-	private JLabel lblPrice9;
-	private JLabel lblPrice10;
 	private JLabel lblTotal;
 	private JLabel lblTotalValue;
 	private JLabel lblHeader;
@@ -203,21 +195,22 @@ public class DentalClinicKen {
 		// ==================== LABELS ====================
 		// Panel New Data Labels
 		lblUsername = new JLabel("Name");
+		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		lblAge = new JLabel("Age");
+		lblAge.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		lblContact = new JLabel("Contact No.");
-		lblDentalServices = new JLabel("Dental Services");
+		lblContact.setFont(new Font("Segoe UI", Font.BOLD, 15));
 		lblPrice1 = new JLabel("₱1000");
-		lblPrice2 = new JLabel("₱2000");
-		lblPrice3 = new JLabel("₱3000");
-		lblPrice4 = new JLabel("₱4000");
-		lblPrice5 = new JLabel("₱5000");
+		lblPrice1.setForeground(new Color(34, 139, 34));
+		lblPrice1.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
 		lblPrice6 = new JLabel("₱6000");
-		lblPrice7 = new JLabel("₱7000");
-		lblPrice8 = new JLabel("₱8000");
-		lblPrice9 = new JLabel("₱9000");
-		lblPrice10 = new JLabel("₱10000");
+		lblPrice6.setForeground(new Color(34, 139, 34));
+		lblPrice6.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
 		lblTotal = new JLabel("Total:");
+		lblTotal.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		lblTotalValue = new JLabel("0");
+		lblTotalValue.setForeground(new Color(34, 139, 34));
+		lblTotalValue.setFont(new Font("Segoe UI Black", Font.BOLD, 25));
 		
 		// Panel Saved Data Labels
 		lblHeader = new JLabel("Customer Information");
@@ -243,14 +236,21 @@ public class DentalClinicKen {
 		// ==================== CHECKBOXES ====================
 		chckbxOption1 = new JCheckBox("Dental Check-up & Oral Exam");
 		chckbxOption2 = new JCheckBox("Teeth Cleaning");
+		chckbxOption2.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		chckbxOption3 = new JCheckBox("Dental Fillings");
+		chckbxOption3.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		chckbxOption4 = new JCheckBox("Tooth Extraction");
+		chckbxOption4.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		chckbxOption5 = new JCheckBox("Root Canal Treatment");
+		chckbxOption5.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		chckbxOption6 = new JCheckBox("Bridges, Dentures & Tooth Replacement");
 		chckbxOption7 = new JCheckBox("Dental Crowns");
+		chckbxOption7.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		chckbxOption8 = new JCheckBox("Orthodontics (Braces / Aligners)");
 		chckbxOption9 = new JCheckBox("Teeth Whitening");
+		chckbxOption9.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 		chckbxOption10 = new JCheckBox("Gum Treatment");
+		chckbxOption10.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
 		// ==================== SCROLL PANES ====================
 		scrollInput = new JScrollPane();
@@ -259,6 +259,7 @@ public class DentalClinicKen {
 
 		// ==================== SEPARATORS ====================
 		separatorDentalService = new JSeparator();
+		separatorDentalService.setForeground(new Color(30, 144, 255));
 		separator = new JSeparator();
 		separator_1 = new JSeparator();
 		separator_2 = new JSeparator();
@@ -282,7 +283,11 @@ public class DentalClinicKen {
 
 		// ==================== CREATE BUTTONS ====================
 		btnCalculateBill = new JButton("Calculate Bill");
+		btnCalculateBill.setBackground(new Color(34, 139, 34));
+		btnCalculateBill.setForeground(new Color(255, 255, 255));
 		btnClear = new JButton("Clear Form");
+		btnClear.setForeground(new Color(255, 255, 255));
+		btnClear.setBackground(new Color(220, 20, 60));
 		btnNewEntry = new JButton("New Form");
 		JButton btnRemoveCustomer = new JButton("Remove Customer");
 		JButton btnEditForm = new JButton("Edit Form");
@@ -295,117 +300,90 @@ public class DentalClinicKen {
 		panelNewData.setLayout(null);
 
 		// Add Labels to Panel New Data
-		lblUsername.setBounds(10, 14, 46, 14);
+		lblUsername.setBounds(11, 50, 46, 14);
 		panelNewData.add(lblUsername);
 		
-		lblAge.setBounds(10, 39, 46, 14);
+		lblAge.setBounds(11, 170, 46, 23);
 		panelNewData.add(lblAge);
 		
-		lblContact.setBounds(10, 64, 71, 14);
+		lblContact.setBounds(11, 109, 97, 23);
 		panelNewData.add(lblContact);
 		
-		lblDentalServices.setBounds(10, 89, 92, 14);
-		panelNewData.add(lblDentalServices);
-		
-		lblPrice1.setBounds(220, 114, 80, 14);
+		lblPrice1.setBounds(276, 404, 80, 22);
 		panelNewData.add(lblPrice1);
 		
-		lblPrice2.setBounds(220, 140, 80, 14);
-		panelNewData.add(lblPrice2);
-		
-		lblPrice3.setBounds(220, 166, 80, 14);
-		panelNewData.add(lblPrice3);
-		
-		lblPrice4.setBounds(220, 192, 80, 14);
-		panelNewData.add(lblPrice4);
-		
-		lblPrice5.setBounds(220, 218, 80, 14);
-		panelNewData.add(lblPrice5);
-		
-		lblPrice6.setBounds(220, 244, 80, 14);
+		lblPrice6.setBounds(709, 407, 70, 20);
 		panelNewData.add(lblPrice6);
 		
-		lblPrice7.setBounds(220, 270, 80, 14);
-		panelNewData.add(lblPrice7);
-		
-		lblPrice8.setBounds(220, 296, 46, 14);
-		panelNewData.add(lblPrice8);
-		
-		lblPrice9.setBounds(220, 322, 46, 14);
-		panelNewData.add(lblPrice9);
-		
-		lblPrice10.setBounds(220, 348, 46, 14);
-		panelNewData.add(lblPrice10);
-		
-		lblTotal.setBounds(279, 322, 46, 14);
+		lblTotal.setBounds(11, 232, 65, 21);
 		panelNewData.add(lblTotal);
 		
-		lblTotalValue.setBounds(464, 322, 46, 14);
+		lblTotalValue.setBounds(151, 230, 108, 23);
 		panelNewData.add(lblTotalValue);
 
 		// Add Text Fields to Panel New Data
 		textUsername.setColumns(10);
-		textUsername.setBounds(84, 11, 175, 20);
+		textUsername.setBounds(10, 74, 249, 25);
 		panelNewData.add(textUsername);
 		
 		textAge.setColumns(10);
-		textAge.setBounds(84, 36, 175, 20);
+		textAge.setBounds(11, 197, 97, 25);
 		panelNewData.add(textAge);
 		
 		textContact.setColumns(10);
-		textContact.setBounds(84, 61, 175, 20);
+		textContact.setBounds(11, 135, 248, 25);
 		panelNewData.add(textContact);
 
 		// Add JCheckboxes to Panel New Data
-		chckbxOption1.setFont(new Font("Tahoma", Font.BOLD, 10));
-		chckbxOption1.setBounds(5, 110, 199, 23);
+		chckbxOption1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 18));
+		chckbxOption1.setBounds(0, 404, 285, 23);
 		panelNewData.add(chckbxOption1);
 		serviceBoxes[0] = chckbxOption1;
 		
-		chckbxOption2.setBounds(5, 136, 199, 23);
+		chckbxOption2.setBounds(61, 441, 216, 23);
 		panelNewData.add(chckbxOption2);
 		serviceBoxes[1] = chckbxOption2;
 		
-		chckbxOption3.setBounds(5, 162, 199, 23);
+		chckbxOption3.setBounds(61, 481, 216, 25);
 		panelNewData.add(chckbxOption3);
 		serviceBoxes[2] = chckbxOption3;
 		
-		chckbxOption4.setBounds(5, 188, 205, 23);
+		chckbxOption4.setBounds(60, 517, 216, 23);
 		panelNewData.add(chckbxOption4);
 		serviceBoxes[3] = chckbxOption4;
 		
-		chckbxOption5.setBounds(5, 214, 205, 23);
+		chckbxOption5.setBounds(61, 552, 216, 23);
 		panelNewData.add(chckbxOption5);
 		serviceBoxes[4] = chckbxOption5;
 		
-		chckbxOption6.setFont(new Font("Tahoma", Font.BOLD, 9));
-		chckbxOption6.setBounds(5, 240, 205, 23);
+		chckbxOption6.setFont(new Font("Segoe UI Semibold", Font.BOLD, 18));
+		chckbxOption6.setBounds(348, 406, 361, 23);
 		panelNewData.add(chckbxOption6);
 		serviceBoxes[5] = chckbxOption6;
 		
-		chckbxOption7.setBounds(5, 266, 199, 23);
+		chckbxOption7.setBounds(429, 441, 199, 23);
 		panelNewData.add(chckbxOption7);
 		serviceBoxes[6] = chckbxOption7;
 		
-		chckbxOption8.setFont(new Font("Tahoma", Font.BOLD, 10));
-		chckbxOption8.setBounds(5, 292, 205, 23);
+		chckbxOption8.setFont(new Font("Segoe UI Semibold", Font.PLAIN, 18));
+		chckbxOption8.setBounds(350, 482, 353, 23);
 		panelNewData.add(chckbxOption8);
 		serviceBoxes[7] = chckbxOption8;
 		
-		chckbxOption9.setBounds(5, 318, 199, 23);
+		chckbxOption9.setBounds(429, 517, 199, 23);
 		panelNewData.add(chckbxOption9);
 		serviceBoxes[8] = chckbxOption9;
 		
-		chckbxOption10.setBounds(5, 344, 205, 23);
+		chckbxOption10.setBounds(429, 552, 205, 23);
 		panelNewData.add(chckbxOption10);
 		serviceBoxes[9] = chckbxOption10;
 
 		// Add Separator to Panel New Data
-		separatorDentalService.setBounds(108, 96, 148, 2);
+		separatorDentalService.setBounds(11, 38, 248, 2);
 		panelNewData.add(separatorDentalService);
 
 		// Add Scroll Pane to Panel New Data
-		scrollInput.setBounds(269, 11, 375, 300);
+		scrollInput.setBounds(269, 11, 502, 322);
 		panelNewData.add(scrollInput);
 		tableInput.setFillsViewportHeight(true);
 		scrollInput.setViewportView(tableInput);
@@ -466,7 +444,7 @@ public class DentalClinicKen {
 		textSavedAge.setFont(new Font("Segoe UI Light", Font.PLAIN, 15));
 		textSavedAge.setEditable(false);
 		textSavedAge.setColumns(10);
-		textSavedAge.setBounds(10, 233, 238, 30);
+		textSavedAge.setBounds(10, 233, 90, 30);
 		panelSavedData.add(textSavedAge);
 
 		// Separators
@@ -481,7 +459,6 @@ public class DentalClinicKen {
 		// Scroll Panes 
 		scrollTable.setBounds(271, 61, 500, 408);
 		panelSavedData.add(scrollTable);
-		tableDisplay.setBorder(new LineBorder(new Color(100, 149, 237), 5, true));
 		tableDisplay.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		tableDisplay.setFillsViewportHeight(true);
 		scrollTable.setViewportView(tableDisplay);
@@ -529,8 +506,8 @@ public class DentalClinicKen {
 		// ==================== BUTTONS SECTION (All buttons at the bottom) ====================
 		
 		btnCalculateBill.addActionListener(calculate);
-		btnCalculateBill.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnCalculateBill.setBounds(286, 364, 168, 23);
+		btnCalculateBill.setFont(new Font("Segoe UI Black", Font.PLAIN, 20));
+		btnCalculateBill.setBounds(11, 263, 248, 30);
 		panelNewData.add(btnCalculateBill);
 		
 		btnClear.addActionListener(new ActionListener() {
@@ -538,9 +515,130 @@ public class DentalClinicKen {
 				clearInput();
 			}
 		});
-		btnClear.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnClear.setBounds(464, 364, 168, 23);
+		btnClear.setFont(new Font("Segoe UI Black", Font.PLAIN, 20));
+		btnClear.setBounds(11, 303, 248, 30);
 		panelNewData.add(btnClear);
+		
+		lblNewForm = new JLabel("Create Form");
+		lblNewForm.setForeground(new Color(30, 144, 255));
+		lblNewForm.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
+		lblNewForm.setBounds(62, 1, 127, 39);
+		panelNewData.add(lblNewForm);
+		lblDentalService.setForeground(new Color(30, 144, 255));
+		lblDentalService.setFont(new Font("Segoe UI Black", Font.BOLD, 25));
+		lblDentalService.setBounds(279, 343, 199, 47);
+		
+		panelNewData.add(lblDentalService);
+		separatorDentalService_1.setForeground(new Color(30, 144, 255));
+		separatorDentalService_1.setBounds(0, 342, 800, 3);
+		
+		panelNewData.add(separatorDentalService_1);
+		
+		separatorDentalService_2 = new JSeparator();
+		separatorDentalService_2.setForeground(new Color(30, 144, 255));
+		separatorDentalService_2.setBounds(0, 388, 797, 2);
+		panelNewData.add(separatorDentalService_2);
+		
+		lblPrice1_1 = new JLabel("₱2000");
+		lblPrice1_1.setForeground(new Color(34, 139, 34));
+		lblPrice1_1.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
+		lblPrice1_1.setBounds(276, 442, 80, 22);
+		panelNewData.add(lblPrice1_1);
+		
+		lblPrice1_2 = new JLabel("₱3000");
+		lblPrice1_2.setForeground(new Color(34, 139, 34));
+		lblPrice1_2.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
+		lblPrice1_2.setBounds(275, 480, 80, 22);
+		panelNewData.add(lblPrice1_2);
+		
+		lblPrice1_3 = new JLabel("₱4000");
+		lblPrice1_3.setForeground(new Color(34, 139, 34));
+		lblPrice1_3.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
+		lblPrice1_3.setBounds(276, 516, 80, 22);
+		panelNewData.add(lblPrice1_3);
+		
+		lblPrice1_4 = new JLabel("₱5000");
+		lblPrice1_4.setForeground(new Color(34, 139, 34));
+		lblPrice1_4.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
+		lblPrice1_4.setBounds(276, 553, 80, 22);
+		panelNewData.add(lblPrice1_4);
+		
+		lblPrice6_1 = new JLabel("₱7000");
+		lblPrice6_1.setForeground(new Color(34, 139, 34));
+		lblPrice6_1.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
+		lblPrice6_1.setBounds(709, 444, 70, 20);
+		panelNewData.add(lblPrice6_1);
+		
+		lblPrice6_2 = new JLabel("₱8000");
+		lblPrice6_2.setForeground(new Color(34, 139, 34));
+		lblPrice6_2.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
+		lblPrice6_2.setBounds(709, 482, 70, 20);
+		panelNewData.add(lblPrice6_2);
+		
+		lblPrice6_3 = new JLabel("₱9000");
+		lblPrice6_3.setForeground(new Color(34, 139, 34));
+		lblPrice6_3.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
+		lblPrice6_3.setBounds(709, 521, 70, 20);
+		panelNewData.add(lblPrice6_3);
+		
+		lblPrice6_4 = new JLabel("₱10000");
+		lblPrice6_4.setForeground(new Color(34, 139, 34));
+		lblPrice6_4.setFont(new Font("Segoe UI Black", Font.BOLD, 20));
+		lblPrice6_4.setBounds(698, 554, 81, 20);
+		panelNewData.add(lblPrice6_4);
+		
+		separator_4 = new JSeparator();
+		separator_4.setForeground(new Color(30, 144, 255));
+		separator_4.setOrientation(SwingConstants.VERTICAL);
+		separator_4.setBounds(11, 433, 20, 131);
+		panelNewData.add(separator_4);
+		
+		separator_5 = new JSeparator();
+		separator_5.setForeground(new Color(30, 144, 255));
+		separator_5.setBounds(11, 452, 46, 20);
+		panelNewData.add(separator_5);
+		
+		separator_6 = new JSeparator();
+		separator_6.setForeground(new Color(30, 144, 255));
+		separator_6.setBounds(13, 491, 46, 20);
+		panelNewData.add(separator_6);
+		
+		separator_7 = new JSeparator();
+		separator_7.setForeground(new Color(30, 144, 255));
+		separator_7.setBounds(13, 528, 46, 20);
+		panelNewData.add(separator_7);
+		
+		separator_8 = new JSeparator();
+		separator_8.setForeground(new Color(30, 144, 255));
+		separator_8.setBounds(13, 562, 46, 20);
+		panelNewData.add(separator_8);
+		
+		separator_9 = new JSeparator();
+		separator_9.setOrientation(SwingConstants.VERTICAL);
+		separator_9.setForeground(new Color(30, 144, 255));
+		separator_9.setBounds(362, 432, 20, 22);
+		panelNewData.add(separator_9);
+		
+		separator_10 = new JSeparator();
+		separator_10.setForeground(new Color(30, 144, 255));
+		separator_10.setBounds(362, 454, 58, 20);
+		panelNewData.add(separator_10);
+		
+		separator_11 = new JSeparator();
+		separator_11.setOrientation(SwingConstants.VERTICAL);
+		separator_11.setForeground(new Color(30, 144, 255));
+		separator_11.setBounds(364, 506, 20, 53);
+		panelNewData.add(separator_11);
+		
+		separator_12 = new JSeparator();
+		separator_12.setForeground(new Color(30, 144, 255));
+		separator_12.setBounds(364, 528, 58, 20);
+		panelNewData.add(separator_12);
+		
+		separator_13 = new JSeparator();
+		separator_13.setForeground(new Color(30, 144, 255));
+		separator_13.setBounds(364, 560, 58, 20);
+		panelNewData.add(separator_13);
 
 		btnNewEntry.setForeground(new Color(255, 255, 255));
 		btnNewEntry.setBackground(new Color(107, 142, 35));
@@ -695,4 +793,26 @@ public class DentalClinicKen {
 			cardlay.next(cardPanel);
 		}
 	};
+	private JLabel lblNewForm;
+	private final JLabel lblDentalService = new JLabel("Dental Services");
+	private final JSeparator separatorDentalService_1 = new JSeparator();
+	private JSeparator separatorDentalService_2;
+	private JLabel lblPrice1_1;
+	private JLabel lblPrice1_2;
+	private JLabel lblPrice1_3;
+	private JLabel lblPrice1_4;
+	private JLabel lblPrice6_1;
+	private JLabel lblPrice6_2;
+	private JLabel lblPrice6_3;
+	private JLabel lblPrice6_4;
+	private JSeparator separator_4;
+	private JSeparator separator_5;
+	private JSeparator separator_6;
+	private JSeparator separator_7;
+	private JSeparator separator_8;
+	private JSeparator separator_9;
+	private JSeparator separator_10;
+	private JSeparator separator_11;
+	private JSeparator separator_12;
+	private JSeparator separator_13;
 }
