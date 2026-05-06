@@ -1,11 +1,13 @@
 import java.awt.CardLayout;
-import java.awt.Component;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -15,22 +17,22 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.Color;
-import javax.swing.border.LineBorder;
-import javax.swing.JToolBar;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.table.DefaultTableModel;
 
-public class DentalClinicKen {
+public class UI_Updated {
 
 	// ==================== INSTANCE VARIABLES (WindowBuilder Format) ====================
 	
@@ -46,7 +48,7 @@ public class DentalClinicKen {
 
 	// Text Fields
 	private JTextField textUsername;
-	private JTextField textAge;
+	private JSpinner spinAge;
 	private JTextField textContact;
 	private JTextField textSavedName;
 	private JTextField textSavedContact;
@@ -115,7 +117,8 @@ public class DentalClinicKen {
 	private JMenuBar menuBar;
 	private JMenu menuFILE;
 	private JMenuItem mItemNew;
-
+	private JMenuItem mItemSaved;
+	
 	// Data Models
 	private DefaultTableModel dataInputModel = new DefaultTableModel(0, 2);
 	private DefaultListModel<String> savedTableDisplay = new DefaultListModel<>();
@@ -136,7 +139,7 @@ public class DentalClinicKen {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DentalClinicKen window = new DentalClinicKen();
+					UI_Updated window = new UI_Updated();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -148,7 +151,7 @@ public class DentalClinicKen {
 	/**
 	 * Create the application.
 	 */
-	public DentalClinicKen() {
+	public UI_Updated() {
 		initialize();
 	}
 
@@ -173,7 +176,24 @@ public class DentalClinicKen {
 		menuBar.add(menuFILE);
 
 		mItemNew = new JMenuItem("New Form");
+		mItemNew.addActionListener(e -> newForm());
 		menuFILE.add(mItemNew);
+		
+		mItemSaved = new JMenuItem("Records");
+		mItemSaved.addActionListener(e -> viewRecords());
+		menuFILE.add(mItemSaved);
+		
+		JSeparator mSeparator = new JSeparator();
+		menuFILE.add(mSeparator);
+		
+		JMenuItem mnItemExit = new JMenuItem("Exit");
+		mnItemExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			System.exit(0);
+				
+			}
+		});
+		menuFILE.add(mnItemExit);
 
 		// ==================== HEADER PANEL ====================
 		headerPanel = new JPanel();
@@ -227,7 +247,8 @@ public class DentalClinicKen {
 
 		// ==================== TEXT FIELDS ====================
 		textUsername = new JTextField();
-		textAge = new JTextField();
+		spinAge = new JSpinner();
+		spinAge.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(0)));
 		textContact = new JTextField();
 		textSavedName = new JTextField();
 		textSavedContact = new JTextField();
@@ -290,6 +311,7 @@ public class DentalClinicKen {
 		btnClear.setBackground(new Color(220, 20, 60));
 		btnNewEntry = new JButton("New Form");
 		JButton btnRemoveCustomer = new JButton("Remove Customer");
+		btnRemoveCustomer.addActionListener(deleteRecord);
 		JButton btnEditForm = new JButton("Edit Form");
 
 		// ==================== CREATE DETAILS PANEL ====================
@@ -325,10 +347,8 @@ public class DentalClinicKen {
 		textUsername.setColumns(10);
 		textUsername.setBounds(10, 74, 249, 25);
 		panelNewData.add(textUsername);
-		
-		textAge.setColumns(10);
-		textAge.setBounds(11, 197, 97, 25);
-		panelNewData.add(textAge);
+		spinAge.setBounds(11, 197, 97, 25);
+		panelNewData.add(spinAge);
 		
 		textContact.setColumns(10);
 		textContact.setBounds(11, 135, 248, 25);
@@ -498,6 +518,7 @@ public class DentalClinicKen {
 
 		cardPanel.add(panelSavedData, "1");
 		cardPanel.add(panelNewData, "2");
+		
 		panelSavedData.setVisible(true);
 
 		// ==================== TABLE MODEL SETUP ====================
@@ -510,11 +531,7 @@ public class DentalClinicKen {
 		btnCalculateBill.setBounds(11, 263, 248, 30);
 		panelNewData.add(btnCalculateBill);
 		
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				clearInput();
-			}
-		});
+		btnClear.addActionListener(e -> clearInput());
 		btnClear.setFont(new Font("Segoe UI Black", Font.PLAIN, 20));
 		btnClear.setBounds(11, 303, 248, 30);
 		panelNewData.add(btnClear);
@@ -673,7 +690,7 @@ public class DentalClinicKen {
 	
 	void clearInput() {
 		textUsername.setText("");
-		textAge.setText("");
+		spinAge.setValue(0);
 		textContact.setText("");
 		deselectBoxes();
 		selectedServices = 0;
@@ -687,6 +704,24 @@ public class DentalClinicKen {
 				cb.setSelected(false);
 			}
 		}
+	}
+	
+	void newForm() {
+		
+		clearInput();
+		cardlay.next(cardPanel);
+		//panelSavedData.setVisible(false);
+		//panelNewData.setVisible(true);
+		
+	}
+	
+	void viewRecords() {
+		
+		clearInput();
+		cardlay.next(cardPanel);
+		//panelSavedData.setVisible(true);
+		//panelNewData.setVisible(false);
+		
 	}
 
 	MouseAdapter selectView = new MouseAdapter() {
@@ -743,56 +778,104 @@ public class DentalClinicKen {
 	};
 
 	ActionListener calculate = new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        
+	        String username = textUsername.getText();
+	        String age = String.valueOf(spinAge.getValue());
+	        String contactNo = textContact.getText();
+	            
+	        if(username.isEmpty() || age.isEmpty() || contactNo.isEmpty()) {
+	            JOptionPane.showMessageDialog(cardPanel, "Customer Information Fields cannot be empty!", "Missing Customer Details", 0);
+	            return;    
+	        }
+	     
+	        try {
+	            Integer.parseInt(age);
+	        } catch(Exception ex) {
+	            return;
+	        }
+
+	        if (dataInputModel.getRowCount() == 0) {
+	            JOptionPane.showMessageDialog(cardPanel, "Please select at least one service!", "Error", 0);
+	            return;
+	        }
+
+	        String totalBill = lblTotalValue.getText();
+
+	        JOptionPane.showMessageDialog(cardPanel, "Total Bill: ₱" + totalBill);
+
+	        savedCustomerDetails[usedTableSlots][0] = username;
+	        savedCustomerDetails[usedTableSlots][1] = age;
+	        savedCustomerDetails[usedTableSlots][2] = contactNo;
+	        savedCustomerDetails[usedTableSlots][3] = totalBill;
+	        savedTableDisplay.addElement(username);
+	        
+	        savedTables[usedTableSlots] = new DefaultTableModel(0, 2);
+	        savedTables[usedTableSlots].setColumnIdentifiers(new String[] {"Service", "Price"} );
+	        for(int row = 0; row < dataInputModel.getRowCount(); row++) {
+	            String service = dataInputModel.getValueAt(row, 0).toString();
+	            String price = dataInputModel.getValueAt(row, 1).toString();
+	            
+	            savedTables[usedTableSlots].addRow(new String[] {service, price});
+	        }
+	        
+	        usedTableSlots++;
+	        
+            viewRecords();
+	        
+	    }
+	};
+	
+	ActionListener deleteRecord = new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+	        
+	    	int query = listDisplayTables.getSelectedIndex();
+	    	
+	    	if(query == -1) {
+	    		
+	    		JOptionPane.showMessageDialog(null, "No entry selected.", "No Selection", JOptionPane.WARNING_MESSAGE);
+	    		return;
+	    	}
+	    	
+	    	int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this entry?");
+	    	if(confirm == JOptionPane.NO_OPTION) return;
+	    	
+	    	savedTableDisplay.remove(query);
+	    	
+	    	savedTables[query].setRowCount(0);
+	    	for(int i = query; i < usedTableSlots; i++) {
+	    		if(!(i == usedTableSlots)) {
+	    			int next = i + 1;
+	    		savedTables[i] = savedTables[next];
+	    		savedCustomerDetails[i][0] = savedCustomerDetails[next][0];
+		        savedCustomerDetails[i][1] = savedCustomerDetails[next][1];
+		        savedCustomerDetails[i][2] = savedCustomerDetails[next][2];
+		        savedCustomerDetails[i][3] = savedCustomerDetails[next][3];
+	    		} else {
+	    			savedTables[i] = null;
+		    		savedCustomerDetails[i][0] = null;
+			        savedCustomerDetails[i][1] = null;
+			        savedCustomerDetails[i][2] = null;
+			        savedCustomerDetails[i][3] = null;
+	    		}
+	    		
+	    	}
+	    	
+	    }
+	};
+	
+	KeyAdapter ignoreLetters = new KeyAdapter() {
 		@Override
-		public void actionPerformed(ActionEvent e) {
-			String username = textUsername.getText();
-			String age = textAge.getText();
-			String contactNo = textContact.getText();
-
-			if (username.isEmpty() || age.isEmpty() || contactNo.isEmpty()) {
-				JOptionPane.showMessageDialog(cardPanel, "Customer Information Fields cannot be empty!",
-						"Missing Customer Details", 0);
-				return;
-			}
-
-			try {
-				Integer.parseInt(age);
-			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(cardPanel, "Invalid age!", "Error", 0);
-				return;
-			}
-
-			if (dataInputModel.getRowCount() == 0) {
-				JOptionPane.showMessageDialog(cardPanel, "Please select at least one service!", "Error", 0);
-				return;
-			}
-
-			String totalBill = lblTotalValue.getText();
-
-			JOptionPane.showMessageDialog(cardPanel, "Total Bill: ₱" + totalBill);
-
-			savedCustomerDetails[usedTableSlots][0] = username;
-			savedCustomerDetails[usedTableSlots][1] = age;
-			savedCustomerDetails[usedTableSlots][2] = contactNo;
-			savedCustomerDetails[usedTableSlots][3] = totalBill;
-			savedTableDisplay.addElement(username);
-
-			savedTables[usedTableSlots] = new DefaultTableModel(0, 2);
-			savedTables[usedTableSlots].setColumnIdentifiers(new String[] { "Service", "Price" });
-			for (int row = 0; row < dataInputModel.getRowCount(); row++) {
-				String service = dataInputModel.getValueAt(row, 0).toString();
-				String price = dataInputModel.getValueAt(row, 1).toString();
-				savedTables[usedTableSlots].addRow(new String[] { service, price });
-			}
-
-			lblTotalCustomers.setText(String.valueOf(usedTableSlots + 1));
-			
-			clearInput();
-			usedTableSlots++;
-
-			cardlay.next(cardPanel);
+		public void keyTyped(KeyEvent e) {
+			if(!Character.isDigit(e.getKeyChar())) e.consume();
 		}
 	};
+	
+	
 	private JLabel lblNewForm;
 	private final JLabel lblDentalService = new JLabel("Dental Services");
 	private final JSeparator separatorDentalService_1 = new JSeparator();
