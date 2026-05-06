@@ -842,7 +842,7 @@ public class UI_Updated {
 	    	}
 	    	
 	    	int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this entry?");
-	    	if(confirm == JOptionPane.NO_OPTION) return;
+	    	if(!(confirm == JOptionPane.YES_OPTION)) return;
 	    	
 	    	savedTableDisplay.remove(query);
 	    	
