@@ -1,12 +1,10 @@
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.DefaultListModel;
@@ -15,17 +13,19 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import javax.swing.ListSelectionModel;
 
 
 public class UI {
@@ -72,6 +72,8 @@ public class UI {
 	private JTextField textSavedAge;
 	private JLabel lblTotalValue;
 	private JLabel lblSavedTotalVal;
+	private JMenuItem mItemNew;
+	private JMenuItem mItemSaved;
 	/**
 	 * Launch the application.
 	 */
@@ -257,7 +259,7 @@ public class UI {
 		JButton btnCalculateBill = new JButton("Calculate Bill");
 		btnCalculateBill.addActionListener(calculate);
 		btnCalculateBill.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnCalculateBill.setBounds(286, 364, 168, 23);
+		btnCalculateBill.setBounds(286, 345, 168, 23);
 		panelNewData.add(btnCalculateBill);
 		
 		panelSavedData = new JPanel();
@@ -285,7 +287,8 @@ public class UI {
 		panelSavedData.add(scrollPane);
 		
 		listDisplayTables = new JList<>(savedTableDisplay);
-		listDisplayTables.addMouseListener(selectView);
+		listDisplayTables.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		listDisplayTables.addListSelectionListener(selectView);
 		scrollPane.setViewportView(listDisplayTables);
 		
 		JLabel lblSavedName = new JLabel("Customer Name:");
@@ -319,15 +322,13 @@ public class UI {
 		panelSavedData.add(textSavedAge);
 		
 		JButton btnNewEntry = new JButton("New Form");
-		btnNewEntry.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cardlay.next(cardPanel);
-			}
-		});
+		btnNewEntry.addActionListener(e -> newForm());
 		btnNewEntry.setBounds(76, 365, 102, 23);
 		panelSavedData.add(btnNewEntry);
 
 		dataInputModel.setColumnIdentifiers(new String[] {"Service", "Price"} );
+		
+		cardPanel.add(panelSavedData, "1");
 		
 		JLabel lblSavedTotal = new JLabel("Total:");
 		lblSavedTotal.setBounds(281, 365, 46, 14);
@@ -337,20 +338,17 @@ public class UI {
 		lblSavedTotalVal.setBounds(466, 365, 46, 14);
 		panelSavedData.add(lblSavedTotalVal);
 		
-		
-		cardPanel.add(panelSavedData, "1");
+		JLabel lblSavedPeso = new JLabel("₱");
+		lblSavedPeso.setBounds(450, 365, 15, 14);
+		panelSavedData.add(lblSavedPeso);
 		cardPanel.add(panelNewData, "2");
 		
         panelSavedData.setVisible(true);
 		
 		JButton btnClear = new JButton("Clear Form");
-		btnClear.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
+		btnClear.addActionListener(e -> clearInput());
 		btnClear.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		btnClear.setBounds(464, 364, 168, 23);
+		btnClear.setBounds(464, 345, 168, 23);
 		panelNewData.add(btnClear);
 		
 		JLabel lblTotal = new JLabel("Total:");
@@ -361,6 +359,16 @@ public class UI {
 		lblTotalValue.setBounds(464, 322, 46, 14);
 		panelNewData.add(lblTotalValue);
 		
+		JLabel lblSavedPeso_1 = new JLabel("₱");
+		lblSavedPeso_1.setBounds(450, 322, 15, 14);
+		panelNewData.add(lblSavedPeso_1);
+		
+		JButton btnBack = new JButton("Cancel");
+		btnBack.addActionListener(e -> viewRecords());
+		btnBack.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnBack.setBounds(371, 376, 168, 23);
+		panelNewData.add(btnBack);
+		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBounds(0, 0, 674, 22);
 		frame.getContentPane().add(menuBar);
@@ -368,9 +376,25 @@ public class UI {
 		JMenu menuFILE = new JMenu("FILE");
 		menuBar.add(menuFILE);
 		
-		JMenuItem mItemNew = new JMenuItem("New Form");
+		mItemNew = new JMenuItem("New Form");
+		mItemNew.addActionListener(e -> newForm());
 		menuFILE.add(mItemNew);
 		
+		mItemSaved = new JMenuItem("Records");
+		mItemSaved.addActionListener(e -> viewRecords());
+		menuFILE.add(mItemSaved);
+		
+		JSeparator mSeparator = new JSeparator();
+		menuFILE.add(mSeparator);
+		
+		JMenuItem mnItemExit = new JMenuItem("Exit");
+		mnItemExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			System.exit(0);
+				
+			}
+		});
+		menuFILE.add(mnItemExit);
 
 		for(JCheckBox cb : serviceBoxes) {
 			cb.addItemListener(service);
@@ -393,15 +417,28 @@ public class UI {
 		
 	}
 	
+	void newForm() {
+		
+		cardlay.next(cardPanel);
+		//panelSavedData.setVisible(false);
+		//panelNewData.setVisible(true);
+		clearInput();
+	}
 	
+	void viewRecords() {
+		
+		cardlay.next(cardPanel);
+		//panelSavedData.setVisible(true);
+		//panelNewData.setVisible(false);
+		clearInput();
+	}
 	
 	// View Data Action Events
 	
-	MouseAdapter selectView = new MouseAdapter() {
+	ListSelectionListener selectView = new ListSelectionListener() {
 		
 		@Override
-		public void mouseClicked(MouseEvent e) {
-			
+		public void valueChanged(ListSelectionEvent e) {
 			int target = listDisplayTables.getSelectedIndex();
 			if(target == -1) return;
 			tableDisplay.setModel(savedTables[target]);
@@ -442,9 +479,12 @@ public class UI {
 				}
 				
 				String price = String.valueOf(servicePrices[target]); // Use the index to display the corect price
-				dataInputModel.addRow(new String[] {name, price});
 				
 				lblTotalValue.setText(String.valueOf(totalBill + servicePrices[target]));
+				
+				dataInputModel.addRow(new String[] {name, price});
+				
+				
 				
 				selectedServices++;
 			}
@@ -453,7 +493,7 @@ public class UI {
 				for(int i = 0; i <= selectedServices; i++) {
 					
 					String valueAt = dataInputModel.getValueAt(i, 0).toString();
-					if(valueAt == name) {
+					if(valueAt.contains(name)) {
 						target = i;
 						System.out.println("target is at: " + i);
 						break;
@@ -463,9 +503,9 @@ public class UI {
 				
 				double price = Double.parseDouble(dataInputModel.getValueAt(target, 1).toString());
 				
-				dataInputModel.removeRow(target);
-				
 				lblTotalValue.setText(String.valueOf(totalBill - price));
+				
+				dataInputModel.removeRow(target);
 				
 				selectedServices--;
 				
@@ -518,12 +558,9 @@ public class UI {
 		            savedTables[usedTableSlots].addRow(new String[] {service, price});
 		        }
 		        
-		        // Reset to Default
-		        clearInput();
-		        //for (int i = 0; i < usedTableSlots) dataInputModel.removeRow(i);
 		        usedTableSlots++;
 		        
-                cardlay.next(cardPanel);
+                viewRecords();
 		        
 		    }
 		};
