@@ -37,10 +37,9 @@ public class UI_Updated {
 	// ==================== INSTANCE VARIABLES (WindowBuilder Format) ====================
 	
 	private JFrame frame;
-	private CardLayout cardlay = new CardLayout(0, 0);
+	//private CardLayout cardlay = new CardLayout(0, 0);
 
 	// Panels
-	private JPanel cardPanel;
 	private JPanel panelSavedData;
 	private JPanel panelNewData;
 	private JPanel headerPanel;
@@ -97,13 +96,13 @@ public class UI_Updated {
 	
 
 	// Tables and Lists
-	private JTable tableInput;
-	private JTable tableDisplay;
+	private JTable tableNewData;
+	private JTable tableSavedData;
 	private JList<String> listDisplayTables;
 	
 	// Scroll Panes
-	private JScrollPane scrollInput;
-	private JScrollPane scrollTable;
+	private JScrollPane scrollNewData;
+	private JScrollPane scrollSavedData;
 	private JScrollPane scrollPane;
 	
 	// Separators
@@ -118,6 +117,8 @@ public class UI_Updated {
 	private JMenu menuFILE;
 	private JMenuItem mItemNew;
 	private JMenuItem mItemSaved;
+	private JMenuItem mItemEdit;
+	private JMenuItem mItemRemove;
 	
 	// Data Models
 	private DefaultTableModel dataInputModel = new DefaultTableModel(0, 2);
@@ -164,25 +165,34 @@ public class UI_Updated {
 	private void initialize() {
 		// ==================== FRAME SETUP ====================
 		frame = new JFrame();
+		frame.setResizable(false);
 		frame.setBounds(100, 100, 815, 749);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		// ==================== MENU BAR ====================
 		menuBar = new JMenuBar();
-		menuBar.setBounds(0, 0, 791, 22);
+		menuBar.setBounds(0, 0, 799, 22);
 		frame.getContentPane().add(menuBar);
 
 		menuFILE = new JMenu("FILE");
 		menuBar.add(menuFILE);
-
-		mItemNew = new JMenuItem("New Form");
-		mItemNew.addActionListener(e -> newForm());
-		menuFILE.add(mItemNew);
 		
 		mItemSaved = new JMenuItem("Records");
 		mItemSaved.addActionListener(e -> viewRecords());
 		menuFILE.add(mItemSaved);
+
+		mItemNew = new JMenuItem("New Record");
+		mItemNew.addActionListener(e -> newForm(true));
+		menuFILE.add(mItemNew);
+		
+		mItemEdit = new JMenuItem("Edit Record");
+		mItemEdit.addActionListener(editRecord);
+		menuFILE.add(mItemEdit);
+		
+		mItemRemove = new JMenuItem("Delete Record");
+		mItemRemove.addActionListener(deleteRecord);
+		menuFILE.add(mItemRemove);
 		
 		JSeparator mSeparator = new JSeparator();
 		menuFILE.add(mSeparator);
@@ -206,12 +216,6 @@ public class UI_Updated {
 		lblDentalClinic.setForeground(new Color(255, 255, 255));
 		lblDentalClinic.setFont(new Font("Segoe UI Black", Font.PLAIN, 40));
 		headerPanel.add(lblDentalClinic);
-
-		// ==================== CARD PANEL ====================
-		cardPanel = new JPanel();
-		cardPanel.setBounds(10, 106, 781, 596);
-		frame.getContentPane().add(cardPanel);
-		cardPanel.setLayout(cardlay);
 
 		// ==================== LABELS ====================
 		// Panel New Data Labels
@@ -251,6 +255,7 @@ public class UI_Updated {
 		spinAge = new JSpinner();
 		spinAge.setModel(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
 		textContact = new JTextField();
+		textContact.addKeyListener(ignoreLetters);
 		textSavedName = new JTextField();
 		textSavedContact = new JTextField();
 		textSavedAge = new JTextField();
@@ -275,8 +280,8 @@ public class UI_Updated {
 		chckbxOption10.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 
 		// ==================== SCROLL PANES ====================
-		scrollInput = new JScrollPane();
-		scrollTable = new JScrollPane();
+		scrollNewData = new JScrollPane();
+		scrollSavedData = new JScrollPane();
 		scrollPane = new JScrollPane();
 
 		// ==================== SEPARATORS ====================
@@ -288,13 +293,13 @@ public class UI_Updated {
 		separator_3 = new JSeparator();
 
 		// ==================== CREATE TABLES ====================
-		tableInput = new JTable(dataInputModel) {
+		tableNewData = new JTable(dataInputModel) {
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
 				return false;
 			}
 		};
 		
-		tableDisplay = new JTable() {
+		tableSavedData = new JTable() {
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
 				return false;
 			}
@@ -307,51 +312,26 @@ public class UI_Updated {
 		btnCalculateBill = new JButton("Calculate Bill");
 		btnCalculateBill.setBackground(new Color(34, 139, 34));
 		btnCalculateBill.setForeground(new Color(255, 255, 255));
+		btnCalculateBill.setToolTipText("Finalise and Save Record.");
 		btnClear = new JButton("Clear Form");
 		btnClear.setForeground(new Color(255, 255, 255));
 		btnClear.setBackground(new Color(220, 20, 60));
-		btnNewEntry = new JButton("New Form");
-		JButton btnRemoveCustomer = new JButton("Remove Customer");
+		btnClear.setToolTipText("Reset Record to the default, empty state.");
+		btnNewEntry = new JButton("New Record");
+		btnNewEntry.setToolTipText("Create New Customer Record.");
+		JButton btnRemoveCustomer = new JButton("Delete Record");
+		btnRemoveCustomer.setToolTipText("Delete Selected Customer Record.");
 		btnRemoveCustomer.addActionListener(deleteRecord);
-		JButton btnEditForm = new JButton("Edit Form");
-		btnEditForm.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int selectedIndex = listDisplayTables.getSelectedIndex();
-				
-				if (selectedIndex == -1) {
-					JOptionPane.showMessageDialog(panelSavedData, "Please select an entry!");
-					return;
-				}
-				
-				clearInput();
-				
-				editIndex = selectedIndex;
-				
-				textUsername.setText(savedCustomerDetails[selectedIndex][0]);
-				spinAge.setValue(Integer.parseInt(savedCustomerDetails[selectedIndex][1]));
-				textContact.setText(savedCustomerDetails[selectedIndex][2]);
-				
-				DefaultTableModel savModel = savedTables[selectedIndex];
-				for (int row = 0; row < savModel.getRowCount(); row++) {
-					String savedService = savModel.getValueAt(row, 0).toString();
-					
-					for (JCheckBox cb : serviceBoxes) {
-						if (cb != null && cb.getText().equals(savedService)) {
-							cb.setSelected(true);
-							break;
-						}
-					}
-				}
-				
-				cardlay.next(cardPanel);
-			}
-		});
+		JButton btnEditForm = new JButton("Edit Record");
+		btnEditForm.setToolTipText("Edit Selected Customer Record.");
+		btnEditForm.addActionListener(editRecord);
 
 		// ==================== CREATE DETAILS PANEL ====================
 		detailsPanel = new JPanel();
 
 		// ==================== SETUP PANEL NEW DATA (Patient Entry Form) ====================
 		panelNewData = new JPanel();
+		panelNewData.setBounds(10, 106, 781, 596);
 		panelNewData.setLayout(null);
 
 		// Add Labels to Panel New Data
@@ -436,13 +416,14 @@ public class UI_Updated {
 		panelNewData.add(separatorDentalService);
 
 		// Add Scroll Pane to Panel New Data
-		scrollInput.setBounds(269, 11, 502, 322);
-		panelNewData.add(scrollInput);
-		tableInput.setFillsViewportHeight(true);
-		scrollInput.setViewportView(tableInput);
+		scrollNewData.setBounds(269, 11, 502, 322);
+		panelNewData.add(scrollNewData);
+		tableNewData.setFillsViewportHeight(true);
+		scrollNewData.setViewportView(tableNewData);
 
 		// ===== SETUP PANEL SAVED DATA (Transaction Log View) =====
 		panelSavedData = new JPanel();
+		panelSavedData.setBounds(10, 106, 781, 596);
 		panelSavedData.setLayout(null);
 
 		// Add Labels to Panel Saved Data
@@ -460,7 +441,7 @@ public class UI_Updated {
 		lblServicesAndPricing.setForeground(Color.BLUE);
 		lblServicesAndPricing.setFont(new Font("Segoe UI", Font.BOLD, 25));
 		lblServicesAndPricing.setBackground(new Color(30, 144, 255));
-		lblServicesAndPricing.setBounds(406, 0, 238, 56);
+		lblServicesAndPricing.setBounds(406, 0, 251, 56);
 		panelSavedData.add(lblServicesAndPricing);
 		
 		lblCustomers.setForeground(Color.BLUE);
@@ -510,11 +491,11 @@ public class UI_Updated {
 		panelSavedData.add(separator_1);
 
 		// Scroll Panes 
-		scrollTable.setBounds(271, 61, 500, 408);
-		panelSavedData.add(scrollTable);
-		tableDisplay.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		tableDisplay.setFillsViewportHeight(true);
-		scrollTable.setViewportView(tableDisplay);
+		scrollSavedData.setBounds(271, 61, 500, 408);
+		panelSavedData.add(scrollSavedData);
+		tableSavedData.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		tableSavedData.setFillsViewportHeight(true);
+		scrollSavedData.setViewportView(tableSavedData);
 		
 		scrollPane.setBounds(10, 315, 238, 225);
 		panelSavedData.add(scrollPane);
@@ -549,10 +530,11 @@ public class UI_Updated {
 		lblSavedTotalVal.setFont(new Font("Segoe UI Black", Font.PLAIN, 30));
 		detailsPanel.add(lblSavedTotalVal);
 
-		cardPanel.add(panelSavedData, "1");
-		cardPanel.add(panelNewData, "2");
+		frame.getContentPane().add(panelSavedData);
+		frame.getContentPane().add(panelNewData);
 		
-		panelSavedData.setVisible(true);
+		viewRecords();
+		
 
 		// ==================== TABLE MODEL SETUP ====================
 		dataInputModel.setColumnIdentifiers(new String[] { "Service", "Price" });
@@ -693,11 +675,7 @@ public class UI_Updated {
 		btnNewEntry.setForeground(new Color(255, 255, 255));
 		btnNewEntry.setBackground(new Color(107, 142, 35));
 		btnNewEntry.setFont(new Font("Segoe UI Black", Font.PLAIN, 20));
-		btnNewEntry.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cardlay.next(cardPanel);
-			}
-		});
+		btnNewEntry.addActionListener(e -> newForm(true));
 		btnNewEntry.setBounds(10, 550, 238, 36);
 		panelSavedData.add(btnNewEntry);
 		
@@ -740,21 +718,26 @@ public class UI_Updated {
 		}
 	}
 	
-	void newForm() {
+	void newForm(Boolean clear) {
 		
-		clearInput();
-		cardlay.next(cardPanel);
-		//panelSavedData.setVisible(false);
-		//panelNewData.setVisible(true);
+		if(clear)clearInput();
+		//cardlay.next(null);
+		panelSavedData.setVisible(false);
+		panelNewData.setVisible(true);
+		mItemEdit.setEnabled(false);
+		mItemRemove.setEnabled(false);
 		
 	}
 	
 	void viewRecords() {
 		
 		clearInput();
-		cardlay.next(cardPanel);
-		//panelSavedData.setVisible(true);
-		//panelNewData.setVisible(false);
+		clearOutput();
+		//cardlay.next(null)
+		mItemEdit.setEnabled(true);
+		mItemRemove.setEnabled(true);
+		panelSavedData.setVisible(true);
+		panelNewData.setVisible(false);
 		
 	}
 	
@@ -762,11 +745,65 @@ public class UI_Updated {
 		textSavedName.setText("");
 		textSavedContact.setText("");
 		textSavedAge.setText("");
+		lblSavedTotalVal.setText("0");
 		listDisplayTables.clearSelection();
-		DefaultTableModel model = (DefaultTableModel) tableDisplay.getModel();
+		DefaultTableModel model = (DefaultTableModel) tableSavedData.getModel();
 		model.setColumnIdentifiers(new String[] {"Service", "Price"});
-		tableDisplay.setModel(model);
+		tableSavedData.setModel(model);
 	}
+	
+	void verifyCapacity() {
+		
+		if(usedTableSlots >= savedTables.length) {
+			btnNewEntry.setEnabled(false);
+			btnNewEntry.setToolTipText("Cannot create new Entry, Database is full.");
+		} else {
+			btnNewEntry.setEnabled(true);
+			btnNewEntry.setToolTipText("Create New Customer Record.");
+		}
+	}
+	
+	private String validateInputs(String username, String age, String contactNo) {
+
+	    if (username.trim().isEmpty()) {
+	        return "Customer name cannot be empty.";
+	    }
+	    if (age.trim().isEmpty()) {
+	        return "Age cannot be empty.";
+	    }
+	    if (contactNo.trim().isEmpty()) {
+	        return "Contact number cannot be empty.";
+	    }
+
+	    if (!username.trim().matches("[a-zA-Z\\s]+")) {
+	        return "Name must contain letters only.";
+	    }
+
+	    int parsedAge;
+	    try {
+	        parsedAge = Integer.parseInt(age.trim());
+	    } catch (NumberFormatException ex) {
+	        return "Age must be a whole number (e.g. 25).";
+	    }
+	    if (parsedAge < 1 || parsedAge > 120) {
+	        return "Age must be between 1 and 120.";
+	    }
+
+	    if (!contactNo.trim().matches("\\d{7,15}")) {
+	        return "Contact number must contain 7 to 15 digits only (no spaces or dashes).";
+	    }
+
+	    if (dataInputModel.getRowCount() == 0) {
+	        return "Please select at least one dental service.";
+	    }
+
+	    if (usedTableSlots >= savedTables.length) {
+	        return "Maximum number of records (30) has been reached.";
+	    }
+
+	    return null;
+	}
+
 
 	MouseAdapter selectView = new MouseAdapter() {
 		@Override
@@ -775,7 +812,7 @@ public class UI_Updated {
 			System.out.print("list index: " + target + "\n");
 			if (target == -1)
 				return;
-			tableDisplay.setModel(savedTables[target]);
+			tableSavedData.setModel(savedTables[target]);
 			textSavedName.setText(savedCustomerDetails[target][0]);
 			textSavedAge.setText(savedCustomerDetails[target][1]);
 			textSavedContact.setText(savedCustomerDetails[target][2]);
@@ -829,26 +866,16 @@ public class UI_Updated {
 	        String username = textUsername.getText();
 	        String age = String.valueOf(spinAge.getValue());
 	        String contactNo = textContact.getText();
-	            
-	        if(username.isEmpty() || age.isEmpty() || contactNo.isEmpty()) {
-	            JOptionPane.showMessageDialog(cardPanel, "Customer Information Fields cannot be empty!", "Missing Customer Details", 0);
-	            return;    
-	        }
-	     
-	        try {
-	            Integer.parseInt(age);
-	        } catch(Exception ex) {
-	            return;
-	        }
-
-	        if (dataInputModel.getRowCount() == 0) {
-	            JOptionPane.showMessageDialog(cardPanel, "Please select at least one service!", "Error", 0);
-	            return;
+	        
+	        String validate = validateInputs(username, age, contactNo);
+	        if(validate != null) {
+	        	JOptionPane.showMessageDialog(null, validate, "Missing Customer Details", 0);
+	        	return;
 	        }
 
 	        String totalBill = lblTotalValue.getText();
 
-	        JOptionPane.showMessageDialog(cardPanel, "Total Bill: ₱" + totalBill);
+	        JOptionPane.showMessageDialog(null, "Total Bill: ₱" + totalBill);
 	        
 	        int targetIndex;
 	        
@@ -859,6 +886,7 @@ public class UI_Updated {
 	        	targetIndex = usedTableSlots;
 	        	savedTableDisplay.addElement(username);
 	        	usedTableSlots++;
+	        	lblTotalCustomers.setText(String.valueOf(usedTableSlots));
 	        }
 
 	        savedCustomerDetails[targetIndex][0] = username;
@@ -877,7 +905,7 @@ public class UI_Updated {
 	        editIndex = -1;
 	        clearOutput();
             viewRecords();
-	        
+            verifyCapacity();
 	    }
 	};
 	
@@ -890,7 +918,7 @@ public class UI_Updated {
 	    	
 	    	if(query == -1) {
 	    		
-	    		JOptionPane.showMessageDialog(null, "No entry selected.", "No Selection", JOptionPane.WARNING_MESSAGE);
+	    		JOptionPane.showMessageDialog(panelSavedData, "No entry selected.", "No Selection", JOptionPane.WARNING_MESSAGE);
 	    		return;
 	    	}
 	    	
@@ -917,11 +945,48 @@ public class UI_Updated {
 	    		}
 	    		
 	    		usedTableSlots--;
+	    		lblTotalCustomers.setText(String.valueOf(usedTableSlots));
 	    		clearOutput();
 	    	}
 	    	
+	    	verifyCapacity();
+	    	
 	    }
 	};
+	
+	ActionListener editRecord = new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int selectedIndex = listDisplayTables.getSelectedIndex();
+			
+			if (selectedIndex == -1) {
+				JOptionPane.showMessageDialog(panelSavedData, "No entry selected.", "No Selection", JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			
+			clearInput();
+			
+			editIndex = selectedIndex;
+			
+			textUsername.setText(savedCustomerDetails[selectedIndex][0]);
+			spinAge.setValue(Integer.parseInt(savedCustomerDetails[selectedIndex][1]));
+			textContact.setText(savedCustomerDetails[selectedIndex][2]);
+			
+			DefaultTableModel savModel = savedTables[selectedIndex];
+			for (int row = 0; row < savModel.getRowCount(); row++) {
+				String savedService = savModel.getValueAt(row, 0).toString();
+				
+				for (JCheckBox cb : serviceBoxes) {
+					if (cb != null && cb.getText().equals(savedService)) {
+						cb.setSelected(true);
+						break;
+					}
+				}
+			}
+			
+			newForm(false);
+		}};
 	
 	KeyAdapter ignoreLetters = new KeyAdapter() {
 		@Override
