@@ -33,8 +33,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class DentalSystem {
+
+	// ==================== INSTANCE VARIABLES (WindowBuilder Format) ====================
+	
 	private JFrame frame;
-	//private CardLayout cardlay = new CardLayout(0, 0);
 
 	// Panels
 	private JPanel panelSavedData;
@@ -160,7 +162,7 @@ public class DentalSystem {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		// ==================== FRAME ====================
+		// ==================== FRAME SETUP ====================
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 815, 749);
@@ -866,13 +868,13 @@ public class DentalSystem {
 	        
 	        String validate = validateInputs(username, age, contactNo);
 	        if(validate != null) {
-	        	JOptionPane.showMessageDialog(null, validate, "Missing Customer Details", 0);
+	        	JOptionPane.showMessageDialog(panelNewData, validate, "Missing Customer Details", 0);
 	        	return;
 	        }
 
 	        String totalBill = lblTotalValue.getText();
 
-	        JOptionPane.showMessageDialog(null, "Total Bill: ₱" + totalBill);
+	        JOptionPane.showMessageDialog(panelNewData, "Total Bill: ₱" + totalBill);
 	        
 	        int targetIndex;
 	        
@@ -919,7 +921,7 @@ public class DentalSystem {
 	    		return;
 	    	}
 	    	
-	    	int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this entry?");
+	    	int confirm = JOptionPane.showConfirmDialog(panelSavedData, "Are you sure you want to delete this entry?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
 	    	if(!(confirm == JOptionPane.YES_OPTION)) return;
 	    	
 	    	savedTableDisplay.remove(query);
