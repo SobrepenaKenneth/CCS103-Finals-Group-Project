@@ -129,6 +129,7 @@ public class UI_Updated {
 	private String savedCustomerDetails[][] = new String[30][4];
 	private double servicePrices[] = { 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000 };
 	private int selectedServices = 0;
+	private int editIndex = -1;
 
 	// ==================== MAIN METHOD ====================
 	
@@ -248,7 +249,7 @@ public class UI_Updated {
 		// ==================== TEXT FIELDS ====================
 		textUsername = new JTextField();
 		spinAge = new JSpinner();
-		spinAge.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(0)));
+		spinAge.setModel(new SpinnerNumberModel(0,0,Integer.MAX_VALUE,1));
 		textContact = new JTextField();
 		textSavedName = new JTextField();
 		textSavedContact = new JTextField();
@@ -313,6 +314,38 @@ public class UI_Updated {
 		JButton btnRemoveCustomer = new JButton("Remove Customer");
 		btnRemoveCustomer.addActionListener(deleteRecord);
 		JButton btnEditForm = new JButton("Edit Form");
+		btnEditForm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int selectedIndex = listDisplayTables.getSelectedIndex();
+				
+				if (selectedIndex == -1) {
+					JOptionPane.showMessageDialog(panelSavedData, "Please select an entry!");
+					return;
+				}
+				
+				clearInput();
+				
+				editIndex = selectedIndex;
+				
+				textUsername.setText(savedCustomerDetails[selectedIndex][0]);
+				spinAge.setValue(Integer.parseInt(savedCustomerDetails[selectedIndex][1]));
+				textContact.setText(savedCustomerDetails[selectedIndex][2]);
+				
+				DefaultTableModel savModel = savedTables[selectedIndex];
+				for (int row = 0; row < savModel.getRowCount(); row++) {
+					String savedService = savModel.getValueAt(row, 0).toString();
+					
+					for (JCheckBox cb : serviceBoxes) {
+						if (cb != null && cb.getText().equals(savedService)) {
+							cb.setSelected(true);
+							break;
+						}
+					}
+				}
+				
+				cardlay.next(cardPanel);
+			}
+		});
 
 		// ==================== CREATE DETAILS PANEL ====================
 		detailsPanel = new JPanel();
@@ -693,9 +726,10 @@ public class UI_Updated {
 		spinAge.setValue(0);
 		textContact.setText("");
 		deselectBoxes();
-		selectedServices = 0;
 		dataInputModel.setRowCount(0);
 		lblTotalValue.setText("0");
+		editIndex = -1;
+		listDisplayTables.setSelectedIndex(-1);
 	}
 
 	void deselectBoxes() {
@@ -723,15 +757,25 @@ public class UI_Updated {
 		//panelNewData.setVisible(false);
 		
 	}
+	
+	void clearOutput() {
+		textSavedName.setText("");
+		textSavedContact.setText("");
+		textSavedAge.setText("");
+		listDisplayTables.clearSelection();
+		DefaultTableModel model = (DefaultTableModel) tableDisplay.getModel();
+		model.setColumnIdentifiers(new String[] {"Service", "Price"});
+		tableDisplay.setModel(model);
+	}
 
 	MouseAdapter selectView = new MouseAdapter() {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			int target = listDisplayTables.getSelectedIndex();
+			System.out.print("list index: " + target + "\n");
 			if (target == -1)
 				return;
 			tableDisplay.setModel(savedTables[target]);
-			System.out.print("list index: " + target);
 			textSavedName.setText(savedCustomerDetails[target][0]);
 			textSavedAge.setText(savedCustomerDetails[target][1]);
 			textSavedContact.setText(savedCustomerDetails[target][2]);
@@ -805,24 +849,33 @@ public class UI_Updated {
 	        String totalBill = lblTotalValue.getText();
 
 	        JOptionPane.showMessageDialog(cardPanel, "Total Bill: ₱" + totalBill);
-
-	        savedCustomerDetails[usedTableSlots][0] = username;
-	        savedCustomerDetails[usedTableSlots][1] = age;
-	        savedCustomerDetails[usedTableSlots][2] = contactNo;
-	        savedCustomerDetails[usedTableSlots][3] = totalBill;
-	        savedTableDisplay.addElement(username);
 	        
-	        savedTables[usedTableSlots] = new DefaultTableModel(0, 2);
-	        savedTables[usedTableSlots].setColumnIdentifiers(new String[] {"Service", "Price"} );
+	        int targetIndex;
+	        
+	        if (editIndex != -1) {
+	        	targetIndex = editIndex;
+	        	savedTableDisplay.set(targetIndex, username);
+	        } else {
+	        	targetIndex = usedTableSlots;
+	        	savedTableDisplay.addElement(username);
+	        	usedTableSlots++;
+	        }
+
+	        savedCustomerDetails[targetIndex][0] = username;
+	        savedCustomerDetails[targetIndex][1] = age;
+	        savedCustomerDetails[targetIndex][2] = contactNo;
+	        savedCustomerDetails[targetIndex][3] = totalBill;
+	        
+	        savedTables[targetIndex] = new DefaultTableModel(0, 2);
+	        savedTables[targetIndex].setColumnIdentifiers(new String[] {"Service", "Price"} );
 	        for(int row = 0; row < dataInputModel.getRowCount(); row++) {
 	            String service = dataInputModel.getValueAt(row, 0).toString();
 	            String price = dataInputModel.getValueAt(row, 1).toString();
 	            
-	            savedTables[usedTableSlots].addRow(new String[] {service, price});
+	            savedTables[targetIndex].addRow(new String[] {service, price});
 	        }
-	        
-	        usedTableSlots++;
-	        
+	        editIndex = -1;
+	        clearOutput();
             viewRecords();
 	        
 	    }
@@ -863,6 +916,8 @@ public class UI_Updated {
 			        savedCustomerDetails[i][3] = null;
 	    		}
 	    		
+	    		usedTableSlots--;
+	    		clearOutput();
 	    	}
 	    	
 	    }
