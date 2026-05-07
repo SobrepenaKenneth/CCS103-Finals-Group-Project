@@ -32,10 +32,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class UI_Updated {
-
-	// ==================== INSTANCE VARIABLES (WindowBuilder Format) ====================
-	
+public class DentalSystem {
 	private JFrame frame;
 	//private CardLayout cardlay = new CardLayout(0, 0);
 
@@ -141,7 +138,7 @@ public class UI_Updated {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					UI_Updated window = new UI_Updated();
+					DentalSystem window = new DentalSystem();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -153,7 +150,7 @@ public class UI_Updated {
 	/**
 	 * Create the application.
 	 */
-	public UI_Updated() {
+	public DentalSystem() {
 		initialize();
 	}
 
@@ -163,7 +160,7 @@ public class UI_Updated {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		// ==================== FRAME SETUP ====================
+		// ==================== FRAME ====================
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setBounds(100, 100, 815, 749);
