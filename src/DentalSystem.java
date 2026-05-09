@@ -974,11 +974,12 @@ public class DentalSystem {
 			        savedCustomerDetails[i][3] = null;
 	    		}
 	    		
-	    		usedTableSlots--;
-	    		lblTotalCustomers.setText(String.valueOf(usedTableSlots));
+	    		
 	    		clearOutput();
 	    	}
 	    	
+	    	usedTableSlots--;
+    		lblTotalCustomers.setText(String.valueOf(usedTableSlots));
 	    	verifyCapacity();
 	    	
 	    }
