@@ -37,7 +37,7 @@ public class DentalSystem {
 	// ==================== INSTANCE VARIABLES (WindowBuilder Format) ====================
 	
 	private JFrame frame;
-
+	private CardLayout cardlay = new CardLayout(0, 0);
 	// Panels
 	private JPanel panelSavedData;
 	private JPanel panelNewData;
@@ -130,6 +130,30 @@ public class DentalSystem {
 	private double servicePrices[] = { 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000 };
 	private int selectedServices = 0;
 	private int editIndex = -1;
+	
+	private JPanel mainPanel;
+	private JLabel lblNewForm;
+	private final JLabel lblDentalService = new JLabel("Dental Services");
+	private final JSeparator separatorDentalService_1 = new JSeparator();
+	private JSeparator separatorDentalService_2;
+	private JLabel lblPrice1_1;
+	private JLabel lblPrice1_2;
+	private JLabel lblPrice1_3;
+	private JLabel lblPrice1_4;
+	private JLabel lblPrice6_1;
+	private JLabel lblPrice6_2;
+	private JLabel lblPrice6_3;
+	private JLabel lblPrice6_4;
+	private JSeparator separator_4;
+	private JSeparator separator_5;
+	private JSeparator separator_6;
+	private JSeparator separator_7;
+	private JSeparator separator_8;
+	private JSeparator separator_9;
+	private JSeparator separator_10;
+	private JSeparator separator_11;
+	private JSeparator separator_12;
+	private JSeparator separator_13;
 
 	// ==================== MAIN METHOD ====================
 	
@@ -168,6 +192,9 @@ public class DentalSystem {
 		frame.setBounds(100, 100, 815, 749);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		mainPanel = new JPanel(cardlay);
+		mainPanel.setBounds(10, 106, 781, 596);
+		frame.getContentPane().add(mainPanel);
 
 		// ==================== MENU BAR ====================
 		menuBar = new JMenuBar();
@@ -290,7 +317,8 @@ public class DentalSystem {
 		separator_1 = new JSeparator();
 		separator_2 = new JSeparator();
 		separator_3 = new JSeparator();
-
+		
+		
 		// ==================== CREATE TABLES ====================
 		tableNewData = new JTable(dataInputModel) {
 			public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -424,6 +452,8 @@ public class DentalSystem {
 		panelSavedData = new JPanel();
 		panelSavedData.setBounds(10, 106, 781, 596);
 		panelSavedData.setLayout(null);
+		
+		cardlay.show(mainPanel, "newform");
 
 		// Add Labels to Panel Saved Data
 		lblHeader.setBackground(new Color(30, 144, 255));
@@ -529,8 +559,8 @@ public class DentalSystem {
 		lblSavedTotalVal.setFont(new Font("Segoe UI Black", Font.PLAIN, 30));
 		detailsPanel.add(lblSavedTotalVal);
 
-		frame.getContentPane().add(panelSavedData);
-		frame.getContentPane().add(panelNewData);
+		mainPanel.add(panelSavedData, "records");
+		mainPanel.add(panelNewData, "newform");
 		
 		viewRecords();
 		
@@ -735,7 +765,6 @@ public class DentalSystem {
 		//cardlay.next(null)
 		mItemEdit.setEnabled(true);
 		mItemRemove.setEnabled(true);
-		panelSavedData.setVisible(true);
 		panelNewData.setVisible(false);
 		
 	}
@@ -993,28 +1022,4 @@ public class DentalSystem {
 			if(!Character.isDigit(e.getKeyChar())) e.consume();
 		}
 	};
-	
-	
-	private JLabel lblNewForm;
-	private final JLabel lblDentalService = new JLabel("Dental Services");
-	private final JSeparator separatorDentalService_1 = new JSeparator();
-	private JSeparator separatorDentalService_2;
-	private JLabel lblPrice1_1;
-	private JLabel lblPrice1_2;
-	private JLabel lblPrice1_3;
-	private JLabel lblPrice1_4;
-	private JLabel lblPrice6_1;
-	private JLabel lblPrice6_2;
-	private JLabel lblPrice6_3;
-	private JLabel lblPrice6_4;
-	private JSeparator separator_4;
-	private JSeparator separator_5;
-	private JSeparator separator_6;
-	private JSeparator separator_7;
-	private JSeparator separator_8;
-	private JSeparator separator_9;
-	private JSeparator separator_10;
-	private JSeparator separator_11;
-	private JSeparator separator_12;
-	private JSeparator separator_13;
 }
