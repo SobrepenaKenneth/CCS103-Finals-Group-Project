@@ -725,6 +725,8 @@ public class DentalSystem {
 		for (JCheckBox cb : serviceBoxes) {
 			cb.addItemListener(service);
 		}
+		
+		initialiseDummy();
 	}
 
 	
@@ -1022,4 +1024,39 @@ public class DentalSystem {
 			if(!Character.isDigit(e.getKeyChar())) e.consume();
 		}
 	};
+	
+	
+	// Dummy
+	private void initialiseDummy() {
+		
+		dummyData("Arthur", 18, 12342567, new int[] {1, 5, 3} );
+		dummyData("Bob", 13, 9109484, new int[] {0, 5, 7} );
+		dummyData("Cane", 15, 1937292, new int[] {1, 3, 9} );
+		dummyData("Duke", 55, 11887391, new int[] {0, 2, 3, 4, 7} );
+	}
+	
+	private void dummyData(String name, int age, int contact, int[] select) {
+		
+		double total = 0;
+		
+		savedTables[usedTableSlots] = new DefaultTableModel(0, 2);
+        savedTables[usedTableSlots].setColumnIdentifiers(new String[] {"Service", "Price"} );
+		savedTableDisplay.addElement(name);
+        
+		for(int i = 0; i < select.length; i++) {
+			String service = serviceBoxes[select[i]].getText();
+			double price = servicePrices[select[i]];
+			total += price;
+
+			savedTables[usedTableSlots].addRow(new String[] {service, String.valueOf(price)});
+		}
+		
+		savedCustomerDetails[usedTableSlots][0] = name;
+		savedCustomerDetails[usedTableSlots][1] = String.valueOf(age);
+		savedCustomerDetails[usedTableSlots][2] = String.valueOf(contact);
+		savedCustomerDetails[usedTableSlots][3] = String.valueOf(total);
+		
+		usedTableSlots++;
+		lblTotalCustomers.setText(String.valueOf(usedTableSlots));
+	}
 }
