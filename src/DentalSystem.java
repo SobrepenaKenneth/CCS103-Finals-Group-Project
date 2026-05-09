@@ -958,7 +958,7 @@ public class DentalSystem {
 	    	savedTableDisplay.remove(query);
 	    	
 	    	savedTables[query].setRowCount(0);
-	    	for(int i = query; i < usedTableSlots; i++) {
+	    	for(int i = query; i <= usedTableSlots; i++) {
 	    		if(!(i == usedTableSlots)) {
 	    			int next = i + 1;
 	    		savedTables[i] = savedTables[next];
