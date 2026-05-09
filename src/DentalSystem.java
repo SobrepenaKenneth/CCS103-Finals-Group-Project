@@ -1059,5 +1059,6 @@ public class DentalSystem {
 		
 		usedTableSlots++;
 		lblTotalCustomers.setText(String.valueOf(usedTableSlots));
+		verifyCapacity();
 	}
 }
