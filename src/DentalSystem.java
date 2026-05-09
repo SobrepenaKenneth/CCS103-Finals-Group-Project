@@ -959,7 +959,7 @@ public class DentalSystem {
 	    	
 	    	savedTables[query].setRowCount(0);
 	    	for(int i = query; i <= usedTableSlots; i++) {
-	    		if(!(i == usedTableSlots)) {
+	    		if(!(i == usedTableSlots-1)) {
 	    			int next = i + 1;
 	    		savedTables[i] = savedTables[next];
 	    		savedCustomerDetails[i][0] = savedCustomerDetails[next][0];
